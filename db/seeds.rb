@@ -1,21 +1,21 @@
-puts "Creating libraries..."
-Library.create(name: "Central Public Library", established_year: 1901)
-Library.create(name: "University Library", established_year: 1965)
-Library.create(name: "Community Branch", established_year: 1988)
-Library.create(name: "Children's Library", established_year: 2005)
+puts "Creating restaurants..."
+Restaurant.create(name: "The Italian Corner", opening_year: 1995)
+Restaurant.create(name: "Burger Palace", opening_year: 2010)
+Restaurant.create(name: "Sushi Zen", opening_year: 2005)
+Restaurant.create(name: "Taco Fiesta", opening_year: 2018)
 
-puts "Creating patrons..."
-Patron.create(name: "Alice Johnson")
-Patron.create(name: "Bob Smith")
-Patron.create(name: "Carol Wilson")
-Patron.create(name: "David Brown")
+puts "Creating customers..."
+Customer.create(name: "Emily Rodriguez")
+Customer.create(name: "Michael Chen")
+Customer.create(name: "Sarah Thompson")
+Customer.create(name: "David Kim")
 
-puts "Creating loans..."
+puts "Creating orders..."
 
 # ***************************************************************
-# * TODO: create loans! Remember, a loan belongs to a patron   *
-# * and a loan belongs to a library.                           *
+# * TODO: create orders! Remember, an order belongs to a       *
+# * customer and an order belongs to a restaurant.             *
 # ***************************************************************
-# Create loans Here
+# Create orders Here
 
 puts "Seeding done!"

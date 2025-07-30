@@ -4,9 +4,9 @@
 
 ```
 ├── app/models/          # Model classes
-│   ├── library.rb       # Library model
-│   ├── patron.rb        # Patron model
-│   └── loan.rb          # Loan model (you'll work on this)
+│   ├── restaurant.rb    # Restaurant model
+│   ├── customer.rb      # Customer model
+│   └── order.rb         # Order model (you'll work on this)
 ├── config/              # Configuration files
 │   ├── environment.rb   # Environment setup
 │   └── database.yml     # Database configuration
@@ -16,7 +16,6 @@
 │   └── development.sqlite3  # Database file
 ├── README.md            # Challenge instructions
 ├── SOLUTION.md          # Sample solutions (check after attempting)
-├── test_runner.rb       # Simple test script
 └── setup.sh             # Setup script
 ```
 
@@ -36,7 +35,6 @@
 ### Testing
 
 - `rake console` - Open interactive console
-- `ruby test_runner.rb` - Run simple tests
 
 ### Useful ActiveRecord Methods
 
@@ -49,18 +47,18 @@
 
 ## Domain Overview
 
-**Library** ←→ **Loan** ←→ **Patron**
+**Restaurant** ←→ **Order** ←→ **Customer**
 
-- A Library has many Loans
-- A Library has many Patrons through Loans
-- A Patron has many Loans
-- A Patron has many Libraries through Loans
-- A Loan belongs to both a Library and a Patron
+- A Restaurant has many Orders
+- A Restaurant has many Customers through Orders
+- A Customer has many Orders
+- A Customer has many Restaurants through Orders
+- An Order belongs to both a Restaurant and a Customer
 
 ## Required Deliverables
 
-1. ✅ Libraries and Patrons tables (already done)
-2. ❌ Loans migration with: book_title, due_date, patron_id, library_id
+1. ✅ Restaurants and Customers tables (already done)
+2. ❌ Orders migration with: dish_name, price, customer_id, restaurant_id
 3. ❌ Model associations using has_many, belongs_to, has_many through
 4. ❌ Custom methods for each model
 

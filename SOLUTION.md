@@ -1,20 +1,20 @@
-# Phase 3 Active Record Mock Code Challenge: Library Book Tracker - SOLUTION
+# Phase 3 Active Record Mock Code Challenge: Restaurant Order Tracker - SOLUTION
 
 This file contains example solutions for the deliverables. Students should attempt the challenge before looking at these solutions.
 
 ## Model Associations
 
-First, create the migration for the `loans` table:
+First, create the migration for the `orders` table:
 
 ```ruby
-# db/migrate/20250730000003_create_loans.rb
-class CreateLoans < ActiveRecord::Migration[6.1]
+# db/migrate/20250730000003_create_orders.rb
+class CreateOrders < ActiveRecord::Migration[6.1]
   def change
-    create_table :loans do |t|
-      t.string :book_title
-      t.string :due_date
-      t.integer :patron_id
-      t.integer :library_id
+    create_table :orders do |t|
+      t.string :dish_name
+      t.integer :price
+      t.integer :customer_id
+      t.integer :restaurant_id
     end
   end
 end
@@ -22,51 +22,51 @@ end
 
 ## Object Association Methods
 
-### Library Model
+### Restaurant Model
 
 ```ruby
-class Library < ActiveRecord::Base
-  has_many :loans
-  has_many :patrons, through: :loans
+class Restaurant < ActiveRecord::Base
+  has_many :orders
+  has_many :customers, through: :orders
 
-  def lend_book(patron, book_title, due_date)
-    self.loans.create(patron: patron, book_title: book_title, due_date: due_date)
+  def take_order(customer, dish_name, price)
+    self.orders.create(customer: customer, dish_name: dish_name, price: price)
   end
 
-  def self.oldest_library
-    self.order(:established_year).first
+  def self.oldest_restaurant
+    self.order(:opening_year).first
   end
 end
 ```
 
-### Patron Model
+### Customer Model
 
 ```ruby
-class Patron < ActiveRecord::Base
-  has_many :loans
-  has_many :libraries, through: :loans
+class Customer < ActiveRecord::Base
+  has_many :orders
+  has_many :restaurants, through: :orders
 
-  def borrowed_book?(book_title)
-    self.loans.any? { |loan| loan.book_title == book_title }
+  def ordered_dish?(dish_name)
+    self.orders.any? { |order| order.dish_name == dish_name }
   end
 
-  def return_book(patron, loan)
-    if loan.patron == self
-      loan.update(patron: patron)
+  def transfer_order(customer, order)
+    if order.customer == self
+      order.update(customer: customer)
     end
   end
 end
 ```
 
-### Loan Model
+### Order Model
 
 ```ruby
-class Loan < ActiveRecord::Base
-  belongs_to :patron
-  belongs_to :library
+class Order < ActiveRecord::Base
+  belongs_to :customer
+  belongs_to :restaurant
 
   def print_details
-    "#{self.patron.name} borrowed #{self.book_title} from #{self.library.name}"
+    "#{self.customer.name} ordered #{self.dish_name} from #{self.restaurant.name}"
   end
 end
 ```
@@ -74,16 +74,16 @@ end
 ## Sample Seeds Data
 
 ```ruby
-# Add to db/seeds.rb after creating the loans table
+# Add to db/seeds.rb after creating the orders table
 
-# Create some sample loans
-alice = Patron.find_by(name: "Alice Johnson")
-bob = Patron.find_by(name: "Bob Smith")
-central = Library.find_by(name: "Central Public Library")
-university = Library.find_by(name: "University Library")
+# Create some sample orders
+emily = Customer.find_by(name: "Emily Rodriguez")
+michael = Customer.find_by(name: "Michael Chen")
+italian_corner = Restaurant.find_by(name: "The Italian Corner")
+burger_palace = Restaurant.find_by(name: "Burger Palace")
 
-Loan.create(patron: alice, library: central, book_title: "To Kill a Mockingbird", due_date: "2025-08-15")
-Loan.create(patron: alice, library: university, book_title: "1984", due_date: "2025-08-20")
-Loan.create(patron: bob, library: central, book_title: "The Great Gatsby", due_date: "2025-08-10")
-Loan.create(patron: bob, library: university, book_title: "Pride and Prejudice", due_date: "2025-08-25")
+Order.create(customer: emily, restaurant: italian_corner, dish_name: "Spaghetti Carbonara", price: 18)
+Order.create(customer: emily, restaurant: burger_palace, dish_name: "Classic Burger", price: 12)
+Order.create(customer: michael, restaurant: italian_corner, dish_name: "Margherita Pizza", price: 16)
+Order.create(customer: michael, restaurant: burger_palace, dish_name: "Cheese Fries", price: 8)
 ```
